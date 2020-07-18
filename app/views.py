@@ -11,5 +11,5 @@ def get_questions(request):
 
 
 def index(request, *args, **kwargs):
-    return render(request, 'base.html', context={})
+    return render(request, 'index.html', context={})
 
