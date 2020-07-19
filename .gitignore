@@ -130,3 +130,5 @@ dmypy.json
 
 # Editors
 .idea
+
+django_cache

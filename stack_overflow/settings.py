@@ -82,6 +82,16 @@ DATABASES = {
     }
 }
 
+CACHE_DIR = f'{BASE_DIR}/django_cache'
+if not os.path.exists(CACHE_DIR):
+    os.makedirs(CACHE_DIR)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': CACHE_DIR,
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
