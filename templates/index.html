@@ -20,7 +20,7 @@
               {% for question in questions.items %}
                 <tr>
                   <th scope="row">{{ forloop.counter }}</th>
-                    <td>{{ question.title }}</td>
+                    <td><a target="blank" href="{% url 'details' question.question_id %}">{{ question.title }}</a></td>
                 </tr>
               {% endfor %}
               </tbody>
