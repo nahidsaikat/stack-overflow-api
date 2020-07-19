@@ -26,24 +26,15 @@
       </button>
     </nav>
 
-    <div class="wrapper">
+<!--    <div class="wrapper">-->
         <!-- Page Content -->
-        <div id="content">
-            <div class="ml290 mb60">
-                <div class="container ml20 mt-3">
-                    {% for link in parent_folder %}
-                        <a href="{{ link.link }}"><span class="text-info">{{ link.text }}</span></a>
-                        {% if not forloop.last %}
-                            <span class="mlr2 text-info">/</span>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-
+        <div id="content" class="mr15">
+            <div class="ml40 mb60 mt40">
                 {% block content %}
                 {% endblock %}
             </div>
         </div>
-    </div>
+<!--    </div>-->
 
     <footer class="page-footer font-small green fixed-bottom text-white">
         <div class="footer-copyright text-center py-3 mr-3"> © 2020 Copyright:

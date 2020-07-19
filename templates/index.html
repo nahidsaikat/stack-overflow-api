@@ -6,49 +6,29 @@
 
 {% block content %}
 
-    <div class="container ml20 mt-3">
-        <p class="text-muted">Folders</p>
+<!--    <div class="container">-->
+        <p class="text-muted">All Questions</p>
         <div class="row">
-            {% for folder in  folder_list %}
-                <a href="{{ folder.get_list_url }}?id={{ folder.pk }}" class="">
-                    <div class="card card-style">
-                        <div class="card-body">
-                            <h6 class="card-title"><i class="fas fa-folder"></i>
-                                <span style="color:{{ folder.text_color }};" class="ml20">
-                                    {{ folder.name|truncatechars:18 }}
-                                </span>
-                            </h6>
-                        </div>
-                    </div>
-                </a>
-            {% empty %}
-                <p class="text-muted ml40">Sorry, no folders here.</p>
-            {% endfor %}
+            <table class="table table-bordered mr15">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Question</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for question in questions.items %}
+                <tr>
+                  <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ question.title }}</td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+            <a type="button" class="btn btn-warning btn-sm {% if not pre_page %}disabled {% endif %}" href="?page={{ pre_page }}">Previous Page</a>
+            <a type="button" class="btn btn-warning btn-sm ml20 {% if not questions.has_more %}disabled {% endif %}" href="?page={{ next_page }}">Next Page</a>
         </div>
-    </div>
-
-    <div class="container ml20 mt-3">
-        <p class="text-muted">Files</p>
-        <div class="row">
-            {% for file in  file_list %}
-                <div class="card card-style">
-                    <div class="card-body">
-                        <p class="card-text"><small class="text-muted">
-                            This is a wider card with supporting text below as a natural lead-in to additional content.
-                            This is a wider card with supporting text below as a natural lead-in to additional content.
-                            This is a wider card with supporting text below as a natural lead-in to additional content.
-                        </small></p>
-                        <h6 class="card-title"><i class="fas fa-file{{ file.icon }}"></i>
-                            <span class="ml5 mr15">{{ file.name|truncatechars:17 }}</span>
-                            <span class="float-right"><a href="{{ file.get_download_url }}"><i class="fas fa-download"></i></a></span>
-                        </h6>
-                    </div>
-                </div>
-            {% empty %}
-                <p class="text-muted ml40">Sorry, no files in this folder.</p>
-            {% endfor %}
-        </div>
-    </div>
+<!--    </div>-->
 
 {% endblock %}
 
