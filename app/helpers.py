@@ -8,7 +8,13 @@ from .models import ClientRequestLog
 
 
 def genereate_cache_key(request):
-    return 'cache'
+    return f"{request.GET}-{request.META['REMOTE_ADDR']}"
+
+
+def get_timestamp(date_str):
+    if date_str:
+        return int(datetime.datetime.timestamp(datetime.datetime.strptime(date_str, "%d/%m/%Y")))
+    return
 
 
 def get_questions(request):
@@ -16,11 +22,37 @@ def get_questions(request):
     log = ClientRequestLog.objects.create(identity=identity)
     log.save()
     page = request.GET.get('page', 1)
-    url = f'https://api.stackexchange.com/2.2/questions?page={page}&pagesize=25&fromdate=1593561600&todate=1595030400&order=desc&min=1593561600&max=1595030400&sort=activity&tagged=python;c&site=stackoverflow'
+    fromdate = get_timestamp(request.GET.get('fromdate'))
+    todate = get_timestamp(request.GET.get('todate'))
+    min = get_timestamp(request.GET.get('min'))
+    max = get_timestamp(request.GET.get('max'))
+    tagged = request.GET.get('tagged')
+    sort = request.GET.get('sort')
+    order = request.GET.get('order')
+    url = f'https://api.stackexchange.com/2.2/questions?page={page}&pagesize=25&site=stackoverflow'
+    if fromdate:
+        url += f'&fromdate={fromdate}'
+    if todate:
+        url += f'&todate={todate}'
+    if min:
+        url += f'&min={min}'
+    if max:
+        url += f'&max={max}'
+    if tagged:
+        url += f'&tagged={tagged}'
+    if sort and sort != '--Sort--':
+        url += f'&sort={sort}'
+    if order and order != '--Order--':
+        url += f'&order={order}'
+
+    questions = None
     if cache.get(genereate_cache_key(request)):
-        return cache.get(genereate_cache_key(request))
-    questions = requests.get(url).json()
-    cache.set(genereate_cache_key(request), questions)
+        questions = cache.get(genereate_cache_key(request))
+        if not questions.get('items'):
+            questions = None
+    if not questions:
+        questions = requests.get(url).json()
+        cache.set(genereate_cache_key(request), questions)
     return questions
 
 

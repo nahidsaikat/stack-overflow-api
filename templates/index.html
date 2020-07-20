@@ -7,6 +7,50 @@
 {% block content %}
 
 <!--    <div class="container">-->
+        <div class="row mb-3">
+            <form method="get">
+              <div class="form-row mb-3">
+                <div class="col-2">
+                  <input type="text" class="form-control" placeholder="from dd/mm/yyyy" name="fromdate">
+                </div>
+                <div class="col-2">
+                  <input type="text" class="form-control" placeholder="to dd/mm/yyyy" name="todate">
+                </div>
+                <div class="col-2">
+                  <input type="text" class="form-control" placeholder="min dd/mm/yyyy" name="min">
+                </div>
+                <div class="col-2">
+                  <input type="text" class="form-control" placeholder="max dd/mm/yyyy" name="max">
+                </div>
+                <div class="col-2">
+                  <input type="text" class="form-control" placeholder="tagged python;java" name="tagged">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col-4 form-group">
+                    <select class="form-control" name="sort">
+                      <option>--Sort--</option>
+                      <option value="activity">activity</option>
+                      <option value="votes">votes</option>
+                      <option value="creation">creation</option>
+                      <option value="hot">hot</option>
+                      <option value="week">week</option>
+                      <option value="month">month</option>
+                    </select>
+                </div>
+                <div class="col-4 form-group">
+                    <select class="form-control" name="order">
+                      <option>--Order--</option>
+                      <option value="asc">asc</option>
+                      <option value="desc">desc</option>
+                    </select>
+                </div>
+              </div>
+                <div class="col-auto">
+                  <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                </div>
+            </form>
+        </div>
         <div class="row">
             {% if not error %}
             <p class="text-muted">All Questions</p>
@@ -21,13 +65,15 @@
               {% for question in questions.items %}
                 <tr>
                   <th scope="row">{{ forloop.counter }}</th>
+                    {% if question.question_id %}
                     <td><a target="blank" href="{% url 'details' question.question_id %}">{{ question.title }}</a></td>
+                    {% endif %}
                 </tr>
               {% endfor %}
               </tbody>
             </table>
-            <a type="button" class="btn btn-warning btn-sm {% if not pre_page %}disabled {% endif %}" href="?page={{ pre_page }}">Previous Page</a>
-            <a type="button" class="btn btn-warning btn-sm ml20 {% if not questions.has_more %}disabled {% endif %}" href="?page={{ next_page }}">Next Page</a>
+            <a id="pre_page" type="button" class="btn btn-warning btn-sm {% if not pre_page %}disabled {% endif %}" href="?page={{ pre_page }}">Previous Page</a>
+            <a id="next_page" type="button" class="btn btn-warning btn-sm ml20 {% if not questions.has_more %}disabled {% endif %}" href="?page={{ next_page }}">Next Page</a>
             {% else %}
                 <p>{{ error }}</p>
             {% endif %}
@@ -38,6 +84,22 @@
 
 {% block js %}
 <script>
+      $(document).ready(function () {
+        $("#sidebar").mCustomScrollbar({
+             theme: "minimal"
+        });
+      });
 
-</script>
+      $("#pre_page").click(function(event){
+          event.preventDefault();
+          var main_url = window.location.href + "&page={{ pre_page }}";
+          window.location.replace(main_url);
+      });
+
+      $("#next_page").click(function(event){
+          event.preventDefault();
+          var main_url = window.location.href + "&page={{ next_page }}";
+          window.location.replace(main_url);
+      });
+    </script>
 {% endblock %}
