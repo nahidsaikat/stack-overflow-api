@@ -4,6 +4,8 @@ This application allows to filter and get the stack overflow questions.
 ### Dependencies
 * Python 3.8
 * Django 3.0
+* pipenv
+* pytest
 
 ### Setup Instructions 
 * Rename .env.sample to .env
@@ -11,3 +13,7 @@ This application allows to filter and get the stack overflow questions.
 * pipenv shell
 * python manage.py migrate
 * python manage.py runserver
+
+### Run Tests
+* pipenv install --dev
+* pytest

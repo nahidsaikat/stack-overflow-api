@@ -22,7 +22,7 @@ from app.views import index, question_detail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index),
+    path('', index, name='home'),
     path('<int:question_id>/', question_detail, name='details'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
